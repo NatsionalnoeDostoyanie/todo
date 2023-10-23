@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <hr>
+    <h1>{{request.user}}</h1>
+
+    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background: none; border: none; cursor:pointer; color: red;">Выйти</button>
+    </form>
+
+    <form method="POST" action="{% url 'add' %}">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Введите название задачи" required>
+        <button type="submit">Добавить задачу</button>
+    </form>
+
+    <ul>
+    {% for task in task_list %}
+        <li>
+            <form method="POST" action="{% url 'update' task.id %}">
+                {% csrf_token %}
+                <input type="checkbox" name="is_complete" {% if task.is_complete %}checked{% endif %} onchange="this.form.submit()" />
+                <span {% if task.is_complete %}style="text-decoration: line-through;"{% endif %}>{{ task.title }}</span>
+            </form>
+
+            <form method="POST" action="{% url 'delete' task.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; cursor:pointer; color: red;">&times;</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

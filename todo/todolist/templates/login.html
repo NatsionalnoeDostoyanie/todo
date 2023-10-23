@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Вход</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label for="id_username">Имя пользователя:</label>
+            <input type="text" name="username" id="id_username" required>
+        </p>
+        <p>
+            <label for="id_password">Пароль:</label>
+            <input type="password" name="password" id="id_password" required>
+        </p>
+        <button type="submit">Войти</button>
+    </form>
+
+    <p>Ещё не зарегистрированы? <a href="{% url 'registration' %}">Регистрация</a></p>
+
+</body>
+</html>
