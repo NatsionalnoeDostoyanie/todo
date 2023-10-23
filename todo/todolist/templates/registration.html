@@ -2,17 +2,45 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Регистрация</title>
 </head>
 <body>
     <h2>Регистрация</h2>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="id_username">Имя пользователя: <small>(Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_)</small></label>
+            <input type="text" name="username" id="id_username" required>
+        </p>
+        <p>
+            <label for="id_password1">Пароль: <small>(Пароль не должен быть слишком похож на другую вашу личную информацию. Ваш пароль должен содержать как минимум 8 символов. Пароль не должен быть слишком простым и распространенным. Пароль не может состоять только из цифр.)</small></label>
+            <input type="password" name="password1" id="id_password1" required>
+            <!-- Добавляем значок глаза и скрипт для переключения видимости пароля -->
+            <span id="password1-toggle" style="cursor: pointer">&#x1F441;</span>
+        </p>
+        <p>
+            <label for="id_password2">Подтверждение пароля: <small>(Для подтверждения введите, пожалуйста, пароль ещё раз.)</small></label>
+            <input type="password" name="password2" id="id_password2" required>
+            <!-- Добавляем значок глаза и скрипт для переключения видимости пароля -->
+            <span id="password2-toggle" style="cursor: pointer">&#x1F441;</span>
+        </p>
         <button type="submit">Зарегистрироваться</button>
     </form>
 
     <p>Уже зарегистрированы? <a href="{% url 'login' %}">Вход</a></p>
 
+    <script>
+        // Функция для переключения видимости пароля
+        ["password1-toggle", "password2-toggle"].forEach(function(id) {
+            document.getElementById(id).addEventListener("click", function () {
+                var passwordInput = document.getElementById(id === "password1-toggle" ? "id_password1" : "id_password2");
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -51,6 +51,7 @@ def registration(request):
             return redirect('index')
     else:
         form = UserCreationForm()
+
     return render(request, 'registration.html', {'form': form})
 
 

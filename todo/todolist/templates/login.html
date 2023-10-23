@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Вход</title>
 </head>
 <body>
     <h2>Вход</h2>
@@ -15,11 +15,24 @@
         <p>
             <label for="id_password">Пароль:</label>
             <input type="password" name="password" id="id_password" required>
+            <!-- Добавляем значок глаза и скрипт для переключения видимости пароля -->
+            <span id="password-toggle" style="cursor: pointer">&#x1F441;</span>
         </p>
         <button type="submit">Войти</button>
     </form>
 
     <p>Ещё не зарегистрированы? <a href="{% url 'registration' %}">Регистрация</a></p>
 
+    <script>
+        // Функция для переключения видимости пароля
+        document.getElementById("password-toggle").addEventListener("click", function () {
+            var passwordInput = document.getElementById("id_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        });
+    </script>
 </body>
 </html>
