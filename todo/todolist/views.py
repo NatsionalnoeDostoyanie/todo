@@ -23,7 +23,12 @@ def index(request):
 @require_http_methods(['POST'])
 def add(request):
     title = request.POST['title']
-    task = Task.objects.create(title=title, user=request.user)
+
+    # If the key 'description' is not found in the dictionary
+    # Python will return the second argument (in this case the empty string '')
+    description = request.POST.get('description', '')
+
+    Task.objects.create(title=title, description=description, user=request.user)
     return redirect('index')
 
 

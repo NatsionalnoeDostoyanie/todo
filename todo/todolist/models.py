@@ -14,7 +14,13 @@ class Task(models.Model):
         blank=True,
     )
 
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
     is_complete = models.BooleanField(default=False)
+
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
