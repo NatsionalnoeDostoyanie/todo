@@ -8,6 +8,7 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name='tasks',
     )
+
     title = models.CharField(
         max_length=500,
         null=True,
