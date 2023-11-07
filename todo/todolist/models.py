@@ -25,8 +25,6 @@ class Task(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    # objects = models.Manager()
-
     class Meta:
         ordering = ['-date_created']
 

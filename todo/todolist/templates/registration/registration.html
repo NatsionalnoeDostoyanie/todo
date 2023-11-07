@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Регистрация</h2>
-    <form method="POST">
+    <form method="post" action="{% url 'registration' %}">
         {% csrf_token %}
         <p>
             <label for="id_username">Имя пользователя: <small>(Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_)</small></label>
