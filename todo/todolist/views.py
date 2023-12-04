@@ -1,5 +1,3 @@
-# If hints for 'objects' do not work, use 'pip install django-stubs'
-
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -13,28 +11,34 @@ from .models import Task
 
 @login_required(login_url='login')
 def index(request):
+    title = 'Главная страница'
     template_name = 'index.html'
-    task_list = Task.objects.filter(user=request.user)
-    form = TaskForm()
+
+    task_list = Task.objects.filter(user=request.user).only(
+        'id',
+        'title',
+        'description',
+        'status',
+        'date_postponed',
+    )
+
+    form = TaskForm
+
     context = {
         'task_list': task_list,
-        'title': 'Главная страница',
-        'form': form
+        'title': title,
+        'form': form,
     }
+
     return render(request, template_name, context)
 
 
 def add(request):
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.user = request.user
-            task.save()
-            return redirect('index')
-    else:
-        form = TaskForm()
-
+    form = TaskForm(request.POST)
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.user = request.user
+        task.save()
     return redirect('index')
 
 

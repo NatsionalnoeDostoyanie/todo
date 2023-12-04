@@ -1,19 +1,23 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
+    <script type="text/javascript" src="{% static "todolist//js//scripts.js" %}"></script>
 </head>
 <body>
-    <h1>{{ title }}</h1>
-    <hr>
-    <h1>{{ request.user }}</h1>
+    <h1>Пользователь: {{ request.user }}</h1>
 
     <form method="post" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
         <button type="submit" style="background: none; border: none; cursor:pointer; color: red;">Выйти</button>
     </form>
+    <br>
+    <br>
 
     <form method="post" action="{% url 'add' %}">
         {% csrf_token %}
@@ -24,41 +28,40 @@
         <div>
             {{ form.description }}
         </div>
+        <div>
+            {{ form.status }}
+        </div>
+        <div>
+            {{ form.date_postponed }}
+        </div>
         <button type="submit">Добавить задачу</button>
     </form>
 
     <ul>
-    {% for task in task_list %}
-    <li>
-        <div style="display: flex; align-items: center;">
-             <form method="post" action="{% url 'update' task.id %}">
-                 {% csrf_token %}
-                 <input type="hidden" name="task_id" value="{{ task.id }}">
-                 <input type="hidden" name="title" value="{{ task.title }}">
-                 <input type="hidden" name="description" value="{{ task.description }}">
-                 <input
-                         type="checkbox"
-                         name="is_complete"
-                         {% if task.is_complete %}
-                            checked
-                         {% endif %}
-                         onchange="submit()"
-                 />
-                 <span {% if task.is_complete %} style="text-decoration: line-through;" {% endif %}>
-                     {{ task.title }}
-                 </span>
-            </form>
-            <form method="post" action="{% url 'delete' task.id %}" style="margin-left: 10px;">
-                {% csrf_token %}
-                <button type="submit" style="background: none; border: none; cursor:pointer; color: red;">&times;</button>
-            </form>
-        </div>
-        <p>{{ task.description | linebreaksbr }}</p> <!-- Linebreaksbr displays line breaks -->
-        <hr>
-        <br>
-    </li>
-    {% endfor %}
+        {% for task in task_list %}
+            <li>
+                <div>
+                    <p style="font-family: 'Courier New', Courier, monospace;">
+                        {{ task.title }}
+                    </p>
+                    <p>
+                        {{ task.description | linebreaksbr }}
+                    </p>
+                    <p>
+                        Статус: {{ task.get_status_display }}
+                    </p>
+                    {% if task.status == 'postponed' %}
+                        <p>Дата отсрочки: {{ task.date_postponed }}</p>
+                    {% endif %}
+                    <div style="display: flex; align-items: center;">
+                        <form method="post" action="{% url 'delete' task.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                        </form>
+                    </div>
+                <hr>
+            </li>
+        {% endfor %}
     </ul>
-
 </body>
 </html>
